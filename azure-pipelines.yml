@@ -24,7 +24,7 @@ stages:
       displayName: Build an image and Push to Docker Hub
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: 'unicorn-frontend'
+        repository: 'royerm/unicorn-frontend'
         command: 'buildAndPush'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: |
