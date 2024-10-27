@@ -1,20 +1,17 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { domain as auth0Domain, clientId, callbackUri } from "./auth.config";
+import App from './App';
 
 ReactDOM.render(
   <Auth0Provider
   domain={auth0Domain}
   clientId={clientId}
+  useRefreshTokens={true}
+  cacheLocation="localstorage"
   redirectUri={callbackUri}
-  /* Uncomment the following lines for better support  in browers like Safari where third-party cookies are blocked.
-     See https://auth0.com/docs/libraries/auth0-single-page-app-sdk#change-storage-options for risks. */
-  // cacheLocation="localstorage",
-  // useRefreshTokens={true}    
   >
     <App />
   </Auth0Provider>,

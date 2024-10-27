@@ -8,9 +8,10 @@ import {
 
 import { useAuth0 } from "@auth0/auth0-react";
 import "./Home.css";
-import LoginButton from "../components/LoginButton";
-import LogoutButton from "../components/LogoutButton";
 import Profile from "../components/Profile";
+import Drive from "../components/Drive";
+import Login from "../components/LoginButton";
+import Logout from "../components/LogoutButton";
 
 const Home: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth0();
@@ -23,19 +24,26 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Auth0 React Sample</IonTitle>
+          <IonTitle>Scribe Parser</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Auth0 React Sample</IonTitle>
+            <IonTitle size="large">Scribe Parser</IonTitle>
           </IonToolbar>
         </IonHeader>
         <div className="container">
-          <Profile />
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-        </div>
+          <Profile />          
+          {isAuthenticated ? (
+          <div>
+          <Drive/>
+          <Logout/>
+          </div>
+        ) : (
+          <Login/>
+        )}
+        </div>        
       </IonContent>
     </IonPage>
   );
