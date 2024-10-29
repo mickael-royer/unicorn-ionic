@@ -1,19 +1,25 @@
+import { IonList, IonItem, IonLabel } from '@ionic/react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:3001';
 
+interface File {
+  id: number;
+  name: string;
+}
+
 const Drive: React.FC = () => {
   const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
           const token = await getAccessTokenSilently();
           //console.log(token);         
-          const response = await axios.get(`${API_BASE_URL}/drive/files`, {
+          const response = await axios.get<File[]>(`${API_BASE_URL}/drive/files`, {
           headers: {
           'Authorization': `Bearer ${token}`,
           },          
@@ -22,7 +28,6 @@ const Drive: React.FC = () => {
         setData(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          // Now TypeScript knows `error` is of type `AxiosError`
           if (error.response?.status === 401) {
             // Handle 401 Unauthorized specifically
             console.log('Unauthorized, redirecting...');
@@ -40,6 +45,8 @@ const Drive: React.FC = () => {
     fetchDataFromApi();
   }, [isAuthenticated, getAccessTokenSilently]);
 
+  console.log(JSON.stringify(data, null, 2));
+
   return (
     <div className="profile-container">
       <h2>Google Drive Files</h2> 
@@ -47,7 +54,15 @@ const Drive: React.FC = () => {
         {data && (
           <div>
             <h2>Data from API:</h2>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <IonList>
+            {data.map((file) => (
+              <IonItem key={file.id}>
+                <IonLabel>
+                  <h2>{file.name}</h2>                  
+                </IonLabel>
+              </IonItem>
+            ))}
+          </IonList>            
           </div>
         )}      
     </div>
