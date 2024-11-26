@@ -33,7 +33,7 @@ const CallbackPage: React.FC = () => {
     };
 
     handleCallback();
-  }, [loginWithRedirect, getAccessTokenWithPopup]);
+  }, [loginWithRedirect, getAccessTokenWithPopup, history]);
 
   return <div>Loading...</div>;
 };
