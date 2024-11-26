@@ -11,7 +11,7 @@ interface File {
 }
 
 const Drive: React.FC = () => {
-  const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const [data, setData] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
