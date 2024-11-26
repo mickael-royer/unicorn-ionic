@@ -12,4 +12,4 @@ const iosOrAndroid = isPlatform('ios') || isPlatform('android');
 
 export const callbackUri = iosOrAndroid
   ? `${appId}://${auth0Domain}/capacitor/${appId}/callback`
-  : 'http://localhost:8100/';
+  : 'https://unicorn.royerm.fr/';
