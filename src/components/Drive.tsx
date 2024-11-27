@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const API_BASE_URL = 'https://api.royerm.fr:3501';
+const API_BASE_URL = 'https://api.royerm.fr';
 
 interface File {
   id: number;
