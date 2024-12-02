@@ -1,8 +1,7 @@
 import { isPlatform } from "@ionic/react";
 
-export const domain = process.env.REACT_APP_AUTH0_DOMAIN || "";
-export const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
-
+export const domain = "royerm.eu.auth0.com";
+export const clientId = "bVa2PDrmp8zmJ9tumzIrDa1lmgQ9IkxX";
 const appId = "io.ionic.starter";
 
 // Use `auth0Domain` in string interpolation below so that it doesn't
@@ -15,4 +14,4 @@ const iosOrAndroid = isPlatform('ios') || isPlatform('android');
 //  ? `${appId}://${auth0Domain}/capacitor/${appId}/callback`
 //  : 'https://unicorn.royerm.fr/';
 
-export const callbackUri = process.env.REACT_APP_AUTH0_CALLBACK_URI || "";
+export const callbackUri = 'https://unicorn.royerm.fr/';
