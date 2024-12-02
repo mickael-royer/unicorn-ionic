@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const API_BASE_URL = 'https://api.royerm.fr';
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || "https://api.royerm.fr";
 
 interface File {
   id: number;
@@ -19,7 +19,7 @@ const Drive: React.FC = () => {
       try {
           const token = await getAccessTokenSilently();
           //console.log(token);         
-          const response = await axios.get<File[]>(`${API_BASE_URL}/drive/files`, {
+          const response = await axios.get<File[]>(`${apiBaseUrl}/drive/files`, {
           headers: {
           'Authorization': `Bearer ${token}`,
           },          
@@ -32,7 +32,7 @@ const Drive: React.FC = () => {
             // Handle 401 Unauthorized specifically
             console.log('Unauthorized, redirecting...');
             setError('Unauthorized, redirecting...');
-            window.location.href = `${API_BASE_URL}/auth/google`;
+            window.location.href = `${apiBaseUrl}/auth/google`;
           } else {
             console.error('Axios error:', error.message);
           }
