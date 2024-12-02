@@ -1,4 +1,4 @@
-import { isPlatform } from "@ionic/react";
+// import { isPlatform } from "@ionic/react";
 
 export const domain = "royerm.eu.auth0.com";
 export const clientId = "bVa2PDrmp8zmJ9tumzIrDa1lmgQ9IkxX";
