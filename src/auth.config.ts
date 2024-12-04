@@ -1,9 +1,7 @@
 // import { isPlatform } from "@ionic/react";
 
 export const domain = process.env.REACT_APP_AUTH0_DOMAIN || "royerm.eu.auth0.com";
-export const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "bVa2PDrmp8zmJ9tumzIrDa1lmgQ9IkxX";
-
-
+export const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
 
 // Use `auth0Domain` in string interpolation below so that it doesn't
 // get replaced by the quickstart auto-packager
