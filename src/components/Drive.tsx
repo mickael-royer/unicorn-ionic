@@ -2,7 +2,6 @@ import { IonList, IonItem, IonLabel, IonListHeader, IonCheckbox, IonButton, IonI
 import { eyeOutline, downloadOutline } from 'ionicons/icons';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
-import axios from 'axios';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || "https://api.royerm.fr";
 
@@ -51,48 +50,57 @@ const Drive: React.FC = () => {
   // Function to handle ConvertMD action on checked files
   const handleConvertMD = async () => {
     const fileIds = Array.from(checkedFiles);
+    // Construct the API URL
+    const url = `${apiBaseUrl}/drive/update-file-extension`;
     try {
-      const response = await fetch(`${apiBaseUrl}/drive/update-file-extension`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileIds }),
       });
       const result = await response.json();
-      console.log('Update result:', result);
-      // Refresh the page after successful processing
-      window.location.reload();
+      //console.log('Update result:', result);
+      setData(groupFilesByExtension(result));
     } catch (error: any) {
       console.error('Error updating file extensions:', error.message);
-      alert('Failed to update file extensions. Please try again.');
     }
   };
 
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
-          const token = await getAccessTokenSilently();
-          //console.log(token);         
-          const response = await axios.get<File[]>(`${apiBaseUrl}/drive/files`, {
+        const token = await getAccessTokenSilently();
+        // Construct the API URL
+        const url = `${apiBaseUrl}/drive/files`;
+      
+        // Make the fetch request
+        const response = await fetch(url, {
+          method: "GET",
           headers: {
-          'Authorization': `Bearer ${token}`,
-          },          
+            'Authorization': `Bearer ${token}`,
+          },
         });
-        console.log(JSON.stringify(response.data, null, 2));
-        setData(groupFilesByExtension(response.data));
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            // Handle 401 Unauthorized specifically
+      
+        // Check for HTTP errors
+        if (!response.ok) {
+          if (response.status === 401) {
             console.log('Unauthorized, redirecting...');
             setError('Unauthorized, redirecting...');
             window.location.href = `${apiBaseUrl}/auth/google`;
-          } else {
-            console.error('Axios error:', error.message);
+            return;
           }
-        } else {
-          console.error('Unknown error:', error);
-          setError('Error fetching data from API');
-        }      
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      
+        // Parse the JSON response
+        const data = await response.json(); // Assuming the response is JSON
+        console.log('Data:', data);
+      
+        // Process and set the data
+        setData(groupFilesByExtension(data));
+      } catch (error) {
+        console.error('Error fetching data from API:', error);
+        setError('Error fetching data from API');
       }
     };
     fetchDataFromApi();
