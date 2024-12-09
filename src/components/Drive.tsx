@@ -1,5 +1,5 @@
 import { IonList, IonItem, IonLabel, IonListHeader, IonCheckbox, IonButton, IonIcon } from '@ionic/react';
-import { eyeOutline, downloadOutline } from 'ionicons/icons';
+import { eyeOutline, downloadOutline, logoMarkdown } from 'ionicons/icons';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 
@@ -129,6 +129,17 @@ const Drive: React.FC = () => {
                           />
                         )}
                         <IonLabel>{file.name}</IonLabel>
+                        {/* Download button pointing to BFF */}
+                        {extension === 'md' && (
+                        <IonButton
+                          fill="clear"
+                          href={`${apiBaseUrl}/drive/download?fileId=${file.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IonIcon icon={logoMarkdown} slot="icon-only" />
+                        </IonButton>
+                        )}
                         {/* Preview button */}
                         <IonButton fill="clear" href={file.webViewLink} target="_blank" rel="noopener noreferrer">
                           <IonIcon icon={eyeOutline} slot="icon-only" />
