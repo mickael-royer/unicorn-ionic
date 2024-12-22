@@ -1,4 +1,4 @@
-import { IonList, IonItem, IonLabel, IonListHeader, IonCheckbox, IonButton, IonIcon } from '@ionic/react';
+import { IonList, IonItem, IonLabel, IonListHeader, IonCheckbox, IonButton, IonIcon, IonToast } from "@ionic/react";
 import { eyeOutline, downloadOutline, logoMarkdown } from 'ionicons/icons';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
@@ -37,6 +37,8 @@ const Drive: React.FC = () => {
   const [data, setData] = useState<Map<string, File[]>>(new Map());
   const [error, setError] = useState<string | null>(null);  
   const [checkedFiles, setCheckedFiles] = useState<Set<string>>(new Set());
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   // Function to handle Checked files
   const handleCheckboxChange = (fileId: string, isChecked: boolean) => {
@@ -45,6 +47,29 @@ const Drive: React.FC = () => {
       isChecked ? updated.add(fileId) : updated.delete(fileId);
       return updated;
     });
+  };
+
+  const handleFileDownload = async (fileId: string) => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/drive/download`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fileId }),
+      });
+
+      if (response.ok) {
+        setToastMessage("File process initiated successfully!");
+        setShowToast(true);
+      } else {
+        throw new Error(`Failed to process file: ${response.statusText}`);
+      }
+    } catch (error: any) {
+      console.error("Error processing file:", error.message);
+      setToastMessage("Error initiating file process.");
+      setShowToast(true);
+    }
   };
 
   // Function to handle ConvertMD action on checked files
@@ -113,6 +138,13 @@ const Drive: React.FC = () => {
         {data && (
           <div>
             <h2>Data from API:</h2>
+            <IonToast
+              isOpen={showToast}
+              onDidDismiss={() => setShowToast(false)}
+              message={toastMessage}
+              duration={2000}
+              color="success"
+            />
             <IonList>
               {Array.from(data.entries()).map(([extension, files]) => (
                 <div key={extension}>
@@ -129,16 +161,14 @@ const Drive: React.FC = () => {
                           />
                         )}
                         <IonLabel>{file.name}</IonLabel>
-                        {/* Download button pointing to BFF */}
-                        {extension === 'md' && (
-                        <IonButton
-                          fill="clear"
-                          href={`${apiBaseUrl}/drive/download?fileId=${file.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <IonIcon icon={logoMarkdown} slot="icon-only" />
-                        </IonButton>
+                        {/* Markdown Process */}
+                        {extension === "md" && (
+                          <IonButton
+                            fill="clear"
+                            onClick={() => handleFileDownload(file.id)} // POST download
+                          >
+                            <IonIcon icon={logoMarkdown} slot="icon-only" />
+                          </IonButton>
                         )}
                         {/* Preview button */}
                         <IonButton fill="clear" href={file.webViewLink} target="_blank" rel="noopener noreferrer">
@@ -153,7 +183,7 @@ const Drive: React.FC = () => {
                   </ul>
                 </div>
               ))}
-            </IonList>
+            </IonList>            
             <IonButton onClick={handleConvertMD} disabled={checkedFiles.size === 0}>
               Convert to Markdown
             </IonButton>            

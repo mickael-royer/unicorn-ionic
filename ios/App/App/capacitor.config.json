@@ -1,1 +1,6 @@
-{}
+{
+	"appId": "io.ionic.starter",
+	"appName": "Unicorn",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
