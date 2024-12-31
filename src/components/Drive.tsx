@@ -146,7 +146,9 @@ const Drive: React.FC = () => {
               color="success"
             />
             <IonList>
-              {Array.from(data.entries()).map(([extension, files]) => (
+              {Array.from(data.entries())
+                    .filter(([extension]) => extension === 'txt' || extension === 'md') // Filter extensions
+                    .map(([extension, files]) => (
                 <div key={extension}>
                   <IonListHeader>
                     <h3>.{extension}</h3>
