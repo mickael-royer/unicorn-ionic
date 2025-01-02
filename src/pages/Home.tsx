@@ -45,8 +45,7 @@ const requestNotificationPermission = async () => {
     );
 
     const token = await getToken(messaging, {
-      vapidKey: "BJkHoavV2CIQJAzxwpyIsjJpCctWsmooQU5BqeTyDKH6tlq0NdU1rshVwpRvsYTA4oZngpY-zWP6mkb9zdvf1UI",
-      serviceWorkerRegistration: registration,
+      vapidKey: 'BJkHoavV2CIQJAzxwpyIsjJpCctWsmooQU5BqeTyDKH6tlq0NdU1rshVwpRvsYTA4oZngpY-zWP6mkb9zdvf1UI'
     });
 
     if (token) {
