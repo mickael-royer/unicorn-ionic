@@ -4,12 +4,12 @@ importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 
 // Firebase configuration (use your project configuration)
 firebase.initializeApp({
-    apiKey: "AIzaSyCRoCk2y6NsEkni0oXb3EAMk1kiL_Y8sd4",
-    authDomain: "unicorn-project-341707.firebaseapp.com",
-    projectId: "unicorn-project-341707",
-    storageBucket: "unicorn-project-341707.firebasestorage.app",
-    messagingSenderId: "1035693891386",
-    appId: "1:1035693891386:web:37859f591f430f0ed8fa03"
+    apiKey: "AIzaSyAca7ZQQqwIISsGatmJ-95fz4fyn-YOFMM",
+    authDomain: "unicorn-firebase-423a9.firebaseapp.com",
+    projectId: "unicorn-firebase-423a9",
+    storageBucket: "unicorn-firebase-423a9.firebasestorage.app",
+    messagingSenderId: "613125335253",
+    appId: "1:613125335253:web:56e45faf8454ae17009a5c"
   });
 
 // Initialize Firebase Messaging
