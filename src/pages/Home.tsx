@@ -19,7 +19,8 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCRoCk2y6NsEkni0oXb3EAMk1kiL_Y8sd4",
+  key: "AIzaSyCRoCk2y6NsEkni0oXb3EAMk1kiL_Y8sd4",
+  apiKey: "AIzaSyAca7ZQQqwIISsGatmJ-95fz4fyn-YOFMM",
   authDomain: "unicorn-firebase-423a9.firebaseapp.com",
   projectId: "unicorn-firebase-423a9",
   storageBucket: "unicorn-firebase-423a9.firebasestorage.app",
