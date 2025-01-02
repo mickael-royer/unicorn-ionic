@@ -4,7 +4,7 @@ importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 
 // Firebase configuration (use your project configuration)
 firebase.initializeApp({
-    apiKey: "AIzaSyAca7ZQQqwIISsGatmJ-95fz4fyn-YOFMM",
+    apiKey: "AIzaSyCRoCk2y6NsEkni0oXb3EAMk1kiL_Y8sd4",
     authDomain: "unicorn-firebase-423a9.firebaseapp.com",
     projectId: "unicorn-firebase-423a9",
     storageBucket: "unicorn-firebase-423a9.firebasestorage.app",
