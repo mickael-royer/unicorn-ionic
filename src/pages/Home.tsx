@@ -18,7 +18,14 @@ import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
-const firebaseConfig = { /* Your Firebase Config */ };
+const firebaseConfig = {
+  apiKey: "AIzaSyCRoCk2y6NsEkni0oXb3EAMk1kiL_Y8sd4",
+  authDomain: "unicorn-project-341707.firebaseapp.com",
+  projectId: "unicorn-project-341707",
+  storageBucket: "unicorn-project-341707.firebasestorage.app",
+  messagingSenderId: "1035693891386",
+  appId: "1:1035693891386:web:37859f591f430f0ed8fa03"
+};
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
 
