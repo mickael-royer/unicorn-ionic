@@ -40,18 +40,22 @@ const requestNotificationPermission = async () => {
       return;
     }
 
-    getToken(messaging, { vapidKey: 'BJtI5VaCyj1eJWa7L3Sq33N6LAlCletPhn7mqMAaxODdeEc2gFYlR_k_lN74wr7ABoHu0a77WxCH8tEeJqHlGFc' }).then((currentToken) => {
-      if (currentToken) {
-        // Send the token to your server and update the UI if necessary
-        // ...
-      } else {
-        // Show permission request UI
-        console.log('No registration token available. Request permission to generate one.');
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
+    console.log("Registering service worker...");
+    const registration = await navigator.serviceWorker.register(
+      "/firebase-messaging-sw.js"
+    );
+
+    const token = await getToken(messaging, {
+      vapidKey: 'BJtI5VaCyj1eJWa7L3Sq33N6LAlCletPhn7mqMAaxODdeEc2gFYlR_k_lN74wr7ABoHu0a77WxCH8tEeJqHlGFc',        
+      serviceWorkerRegistration: registration,
     });
 
+    if (token) {
+      console.log("FCM token retrieved:", token);
+      // Send token to backend
+    } else {
+      console.warn("Failed to retrieve FCM token.");
+    }
   } catch (error) {
     console.error("Error requesting notification permission:", error);
   }
