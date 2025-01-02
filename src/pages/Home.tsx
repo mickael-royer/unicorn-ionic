@@ -43,21 +43,21 @@ const requestNotificationPermission = async () => {
       console.warn("Notification permission not granted");
       return;
     }
-  
-    // Unregister previous service worker
-    const registrations = await navigator.serviceWorker.getRegistrations()
-    for (let registration of registrations) {
-        console.log("Unregistering service worker", registration);
-        await registration.unregister();
-    }
 
+    console.log("Registering service worker...");
     const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-    
-      // Wait for the service worker to be active before getting the token
-      await Promise.race([
-        navigator.serviceWorker.ready,
-        new Promise((_, reject) => setTimeout(() => reject(new Error("Service worker not ready in time")), 5000)) // 5 seconds timeout
-      ]);
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    } else {
+      console.warn('Service Worker not supported in this browser.');
+    }
 
     const token = await getToken(messaging, {
       vapidKey: "BH-8qoL7AuilWVfEZuF21ZxUAFM3cbBri_BNPn6bwM12-8Wmza6J2b31bleKBe0QCVEZH_dkLUcmKKMzdG-3Ozo", // Replace with your actual VAPID key
