@@ -61,7 +61,7 @@ const App: React.FC = () => {
             <CallBackPage />
           </Route>
         </IonRouterOutlet>
-      </IonReactRouter>
+      </IonReactRouter>      
     </IonApp>
    );
 };

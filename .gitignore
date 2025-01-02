@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# certificats
+*.pem
+
 # production
 /build
 
