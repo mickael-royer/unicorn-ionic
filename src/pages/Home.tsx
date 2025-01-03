@@ -8,18 +8,53 @@ import {
 } from "@ionic/react";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+import { HubConnectionBuilder, HubConnection, LogLevel } from "@microsoft/signalr";
 import "./Home.css";
 import Profile from "../components/Profile";
 import Drive from "../components/Drive";
 import Login from "../components/LoginButton";
 import Logout from "../components/LogoutButton";
 
-import { useState } from "react";
-
 const Home: React.FC = () => {
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isLoading, isAuthenticated, user } = useAuth0();
   const [toastMessage, setToastMessage] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
+  const [connection, setConnection] = useState<HubConnection | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const initSignalRConnection = async () => {
+        const newConnection = new HubConnectionBuilder()
+          .withUrl("https://unicorn-notification.service.signalr.net")
+          .configureLogging(LogLevel.Information)
+          .withAutomaticReconnect()
+          .build();
+
+        try {
+          await newConnection.start();
+          console.log("SignalR connected.");
+          setConnection(newConnection);
+
+          newConnection.on("ReceiveNotification", (notification: string) => {
+            console.log("Notification received:", notification);
+            setToastMessage(notification);
+            setShowToast(true);
+          });
+        } catch (error) {
+          console.error("SignalR connection failed:", error);
+        }
+      };
+
+      initSignalRConnection();
+
+      return () => {
+        if (connection) {
+          connection.stop();
+        }
+      };
+    }
+  }, [isAuthenticated, user]);
 
   if (isLoading) return null;
 
@@ -50,10 +85,7 @@ const Home: React.FC = () => {
       </IonContent>
       <IonToast
         isOpen={showToast}
-        onDidDismiss={() => {
-          setShowToast(false);
-          setToastMessage("");
-        }}
+        onDidDismiss={() => setShowToast(false)}
         message={toastMessage}
         duration={3000}
         color="primary"
