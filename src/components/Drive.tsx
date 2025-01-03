@@ -84,7 +84,6 @@ const Drive: React.FC = () => {
         body: JSON.stringify({ fileIds }),
       });
       const result = await response.json();
-      //console.log('Update result:', result);
       setData(groupFilesByExtension(result));
     } catch (error: any) {
       console.error('Error updating file extensions:', error.message);
