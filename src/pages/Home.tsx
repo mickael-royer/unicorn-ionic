@@ -14,7 +14,7 @@ import Drive from "../components/Drive";
 import Login from "../components/LoginButton";
 import Logout from "../components/LogoutButton";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Home: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth0();
