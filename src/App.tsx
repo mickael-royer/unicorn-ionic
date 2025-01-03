@@ -27,8 +27,13 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { useEffect } from "react";
+import { addIcons } from 'ionicons';
+import { sparklesOutline, logoMarkdown  } from 'ionicons/icons';
 
 setupIonicReact();
+
+addIcons({ sparklesOutline });
+addIcons({ logoMarkdown });
 
 const App: React.FC = () => {
   const { handleRedirectCallback } = useAuth0();
