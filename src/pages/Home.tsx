@@ -8,8 +8,8 @@ import {
 } from "@ionic/react";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
-import { HubConnectionBuilder, HubConnection, LogLevel } from "@microsoft/signalr";
+import { useState, useEffect } from "react";
+import Pusher from "pusher-js";
 import "./Home.css";
 import Profile from "../components/Profile";
 import Drive from "../components/Drive";
@@ -20,41 +20,32 @@ const Home: React.FC = () => {
   const { isLoading, isAuthenticated, user } = useAuth0();
   const [toastMessage, setToastMessage] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
-  const [connection, setConnection] = useState<HubConnection | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const initSignalRConnection = async () => {
-        const newConnection = new HubConnectionBuilder()
-          .withUrl("https://unicorn-notification.service.signalr.net")
-          .configureLogging(LogLevel.Information)
-          .withAutomaticReconnect()
-          .build();
+    if (isAuthenticated) {
+      // Initialize Pusher
+      const pusher = new Pusher("404b62fffcad0de861ed", {
+        cluster: "eu",
+      });
 
-        try {
-          await newConnection.start();
-          console.log("SignalR connected.");
-          setConnection(newConnection);
+      // Subscribe to the channel
+      const channel = pusher.subscribe("unicorn-notification");
 
-          newConnection.on("ReceiveNotification", (notification: string) => {
-            console.log("Notification received:", notification);
-            setToastMessage(notification);
-            setShowToast(true);
-          });
-        } catch (error) {
-          console.error("SignalR connection failed:", error);
-        }
-      };
+      // Bind to the event
+      channel.bind("publish", (data: any) => {
+        // Update the toast message and display it
+        setToastMessage(data.message || "File published !");
+        setShowToast(true);
+      });
 
-      initSignalRConnection();
-
+      // Cleanup on component unmount
       return () => {
-        if (connection) {
-          connection.stop();
-        }
+        channel.unbind_all();
+        channel.unsubscribe();
+        pusher.disconnect();
       };
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated]);
 
   if (isLoading) return null;
 
@@ -87,7 +78,7 @@ const Home: React.FC = () => {
         isOpen={showToast}
         onDidDismiss={() => setShowToast(false)}
         message={toastMessage}
-        duration={3000}
+        duration={10000}
         color="primary"
       />
     </IonPage>
