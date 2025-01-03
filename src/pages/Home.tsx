@@ -17,7 +17,7 @@ import Login from "../components/LoginButton";
 import Logout from "../components/LogoutButton";
 
 const Home: React.FC = () => {
-  const { isLoading, isAuthenticated, user } = useAuth0();
+  const { isLoading, isAuthenticated } = useAuth0();
   const [toastMessage, setToastMessage] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
 
