@@ -15,6 +15,7 @@ import Profile from "../components/Profile";
 import Drive from "../components/Drive";
 import Login from "../components/LoginButton";
 import Logout from "../components/LogoutButton";
+import { sparklesOutline } from 'ionicons/icons';
 
 const Home: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth0();
@@ -80,7 +81,7 @@ const Home: React.FC = () => {
         message={toastMessage}
         duration={10000}
         color="success"
-        icon="sparklesOutline"
+        icon={sparklesOutline}
       />
     </IonPage>
   );
