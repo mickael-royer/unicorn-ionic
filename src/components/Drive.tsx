@@ -187,7 +187,7 @@ const Drive: React.FC = () => {
               message={toastMessage}
               duration={2000}
               color="primary"
-              icon="logo-markdown"
+              icon="logoMarkdown"
             />            
           </div>
         )}      

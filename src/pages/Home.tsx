@@ -80,7 +80,7 @@ const Home: React.FC = () => {
         message={toastMessage}
         duration={10000}
         color="success"
-        icon="sparkles-outline"
+        icon="sparklesOutline"
       />
     </IonPage>
   );
