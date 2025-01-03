@@ -15,74 +15,11 @@ import Login from "../components/LoginButton";
 import Logout from "../components/LogoutButton";
 
 import { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAca7ZQQqwIISsGatmJ-95fz4fyn-YOFMM",
-  authDomain: "unicorn-firebase-423a9.firebaseapp.com",
-  projectId: "unicorn-firebase-423a9",
-  storageBucket: "unicorn-firebase-423a9.firebasestorage.app",
-  messagingSenderId: "613125335253",
-  appId: "1:613125335253:web:56e45faf8454ae17009a5c"
-};
-
-const firebaseApp = initializeApp(firebaseConfig);
-const messaging = getMessaging(firebaseApp);
-
-const requestNotificationPermission = async () => {
-  try {
-    console.log("Requesting notification permission...");
-    const permission = await Notification.requestPermission();
-
-    if (permission !== "granted") {
-      console.warn("Notification permission not granted");
-      return;
-    }
-
-    console.log("Registering service worker...");
-    const registration = await navigator.serviceWorker.register(
-      "/firebase-messaging-sw.js"
-    );
-
-    const token = await getToken(messaging, {
-      vapidKey: 'BJtI5VaCyj1eJWa7L3Sq33N6LAlCletPhn7mqMAaxODdeEc2gFYlR_k_lN74wr7ABoHu0a77WxCH8tEeJqHlGFc',        
-      serviceWorkerRegistration: registration,
-    });
-
-    if (token) {
-      console.log("FCM token retrieved:", token);
-      // Send token to backend
-    } else {
-      console.warn("Failed to retrieve FCM token.");
-    }
-  } catch (error) {
-    console.error("Error requesting notification permission:", error);
-  }
-};
 
 const Home: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth0();
   const [toastMessage, setToastMessage] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      requestNotificationPermission();
-
-      const unsubscribe = onMessage(messaging, (payload) => {
-        console.log("Message received: ", payload);
-        if (payload.notification) {
-          const title = payload.notification.title || "Notification";
-          const body = payload.notification.body || "You have a new message";
-          setToastMessage(`${title}: ${body}`);
-          setShowToast(true);
-        }
-      });
-
-      return () => unsubscribe(); // Cleanup
-    }
-  }, [isAuthenticated]);
 
   if (isLoading) return null;
 
