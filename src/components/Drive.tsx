@@ -137,14 +137,7 @@ const Drive: React.FC = () => {
       {error && <div>Error: {error}</div>}
         {data && (
           <div>
-            <h2>Data from API:</h2>
-            <IonToast
-              isOpen={showToast}
-              onDidDismiss={() => setShowToast(false)}
-              message={toastMessage}
-              duration={2000}
-              color="success"
-            />
+            <h2>Data from API:</h2>            
             <IonList>
               {Array.from(data.entries())
                     .filter(([extension]) => extension === 'txt' || extension === 'md') // Filter extensions
@@ -188,7 +181,15 @@ const Drive: React.FC = () => {
             </IonList>            
             <IonButton onClick={handleConvertMD} disabled={checkedFiles.size === 0}>
               Convert to Markdown
-            </IonButton>            
+            </IonButton>
+            <IonToast
+              isOpen={showToast}
+              onDidDismiss={() => setShowToast(false)}
+              message={toastMessage}
+              duration={2000}
+              color="primary"
+              icon="logo-markdown"
+            />            
           </div>
         )}      
     </div>

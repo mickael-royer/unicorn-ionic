@@ -79,7 +79,8 @@ const Home: React.FC = () => {
         onDidDismiss={() => setShowToast(false)}
         message={toastMessage}
         duration={10000}
-        color="primary"
+        color="success"
+        icon="sparkles-outline"
       />
     </IonPage>
   );
